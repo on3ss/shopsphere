@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - product-postgres-data:/var/lib/postgresql/data
+      - product-postgres-data:/var/lib/postgresql
     healthcheck:
       test:
         [
