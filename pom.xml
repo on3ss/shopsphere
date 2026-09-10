@@ -24,7 +24,7 @@
     </description>
 
     <modules>
-        <!-- <module>services/config-server</module> -->
+         <module>services/config-server</module>
         <module>services/discovery-server</module>
         <!-- <module>services/api-gateway</module> -->
         <module>services/product-service</module>
