@@ -1,4 +1,4 @@
-package dev.shopsphere.discovery_server;
+package dev.shopsphere.discovery;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
