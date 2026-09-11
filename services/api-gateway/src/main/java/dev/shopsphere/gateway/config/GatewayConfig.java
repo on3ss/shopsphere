@@ -15,6 +15,9 @@ public class GatewayConfig {
     @Value("${app.routes.order-service-uri:lb://ORDER-SERVICE}")
     private String orderServiceUri;
 
+    @Value("${app.routes.inventory-service-uri:lb://INVENTORY-SERVICE}")
+    private String inventoryServiceUri;
+
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
@@ -24,6 +27,9 @@ public class GatewayConfig {
                 .route("order-service", r -> r
                         .path("/api/v1/orders", "/api/v1/orders/**")
                         .uri(orderServiceUri))
+                .route("inventory-service", r -> r
+                        .path("/api/v1/inventory", "/api/v1/inventory/**")
+                        .uri(inventoryServiceUri))
                 .build();
     }
 }

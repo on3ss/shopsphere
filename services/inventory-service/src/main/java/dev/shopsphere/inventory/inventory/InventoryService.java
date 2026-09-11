@@ -1,7 +1,5 @@
 package dev.shopsphere.inventory.inventory;
 
-import dev.shopsphere.inventory.exception.InsufficientStockException;
-import dev.shopsphere.inventory.exception.InventoryNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
