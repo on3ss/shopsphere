@@ -1,11 +1,11 @@
 package dev.shopsphere.order.product;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Component
@@ -13,7 +13,10 @@ public class RestProductClient implements ProductClient {
 
     private final RestClient restClient;
 
-    public RestProductClient(RestClient.Builder builder) {
+    public RestProductClient(
+            @Qualifier("loadBalancedRestClientBuilder")
+            RestClient.Builder builder) {
+
         this.restClient = builder
                 .baseUrl("http://product-service")
                 .build();

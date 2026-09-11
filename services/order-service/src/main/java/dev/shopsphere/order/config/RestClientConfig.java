@@ -9,15 +9,17 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class RestClientConfig {
 
+    // Plain, unqualified builder — Eureka's auto-config picks this one up
     @Bean
     @Primary
-    RestClient.Builder restClientBuilder() {
+    public RestClient.Builder restClientBuilder() {
         return RestClient.builder();
     }
 
+    // Load-balanced builder for your own service-to-service calls
     @Bean
     @LoadBalanced
-    RestClient.Builder loadBalancedRestClientBuilder() {
+    public RestClient.Builder loadBalancedRestClientBuilder() {
         return RestClient.builder();
     }
 }
