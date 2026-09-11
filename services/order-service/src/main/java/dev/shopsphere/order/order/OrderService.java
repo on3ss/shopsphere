@@ -1,9 +1,11 @@
 package dev.shopsphere.order.order;
 
+import dev.shopsphere.order.event.OrderCreatedEvent;
 import dev.shopsphere.order.product.ProductClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -57,6 +59,20 @@ public class OrderService {
 
             order.addItem(item);
         }
+
+        OrderCreatedEvent event = new OrderCreatedEvent(
+                UUID.randomUUID(),
+                order.getId(),
+                order.getCustomerId(),
+                order.getCurrency(),
+                order.getItems()
+                        .stream()
+                        .map(orderItem -> new OrderCreatedEvent.Item(
+                                orderItem.getProductId(),
+                                orderItem.getQuantity())
+                        ).toList(),
+                Instant.now()
+        );
 
         return toResponse(orderRepository.save(order));
     }
