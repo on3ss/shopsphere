@@ -1,5 +1,5 @@
 .PHONY: help build test clean \
-        run-config run-discovery run-gateway run-product \
+        run-config run-discovery run-gateway run-product run-order \
         run-all stop-all \
         run-infra stop-infra restart-infra \
         logs ps \
@@ -31,6 +31,7 @@ help:
 	@echo "  make run-discovery   Run Eureka Discovery Server"
 	@echo "  make run-gateway     Run API Gateway"
 	@echo "  make run-product     Run Product Service"
+	@echo "  make run-order       Run Order Service"
 	@echo "  make run-all         Start all services + infrastructure"
 	@echo "  make stop-all        Stop all services + infrastructure"
 	@echo ""
@@ -74,6 +75,9 @@ run-gateway:
 run-product:
 	$(MVN) -pl services/product-service spring-boot:run
 
+run-order:
+	$(MVN) -pl services/order-service spring-boot:run
+
 # --------------------------------------------------
 # Infrastructure
 # --------------------------------------------------
@@ -110,6 +114,8 @@ run-all: run-infra
 	@$(MVN) -pl services/api-gateway spring-boot:run > $(LOG_DIR)/api-gateway.log 2>&1 &
 	@echo "Starting Product Service..."
 	@$(MVN) -pl services/product-service spring-boot:run > $(LOG_DIR)/product-service.log 2>&1 &
+	@echo "Starting Order Service..."
+	@$(MVN) -pl services/order-service spring-boot:run > $(LOG_DIR)/order-service.log 2>&1 &
 	@echo ""
 	@echo "All services are starting. Tail logs with:"
 	@echo "  tail -f $(LOG_DIR)/*.log"
@@ -121,5 +127,6 @@ stop-all:
 	-@pkill -f 'services/discovery-server' 2>/dev/null || true
 	-@pkill -f 'services/api-gateway' 2>/dev/null || true
 	-@pkill -f 'services/product-service' 2>/dev/null || true
+	-@pkill -f 'services/order-service' 2>/dev/null || true
 	@$(MAKE) stop-infra
 	@echo "All services and infrastructure stopped."

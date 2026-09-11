@@ -20,5 +20,27 @@ services:
       timeout: 5s
       retries: 10
 
+  postgres-order:
+    image: postgres:18
+    container_name: shopsphere-postgres-order
+    environment:
+      POSTGRES_DB: order_db
+      POSTGRES_USER: order
+      POSTGRES_PASSWORD: order
+    ports:
+      - "5434:5432"
+    volumes:
+      - order-postgres-data:/var/lib/postgresql
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U order -d order_db"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 volumes:
   product-postgres-data:
+  order-postgres-data:
