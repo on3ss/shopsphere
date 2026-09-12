@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: shopsphere
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: shopsphere/api-gateway
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              value: http://discovery-server:8761/eureka/
+            # spring-boot.run.fork=false (set in the Dockerfile CMD) means
+            # Maven's own JVM runs the app directly — one process per pod,
+            # not two — so these options apply to that single JVM.
+            # TieredStopAtLevel=1 skips the C2 JIT tier: slower steady-state
+            # throughput, faster boot, which is the trade you want for a
+            # process that restarts on every hot reload.
+            - name: JAVA_TOOL_OPTIONS
+              value: "-Xmx384m -XX:MaxMetaspaceSize=128m -XX:TieredStopAtLevel=1 -XX:+UseSerialGC"
+          resources:
+            requests:
+              cpu: 150m
+              memory: 320Mi
+            limits:
+              cpu: 500m
+              memory: 640Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway
+  namespace: shopsphere
+spec:
+  selector:
+    app: api-gateway
+  ports:
+    - port: 8080
+      targetPort: 8080
