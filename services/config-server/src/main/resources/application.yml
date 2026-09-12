@@ -4,8 +4,17 @@ server:
 spring:
   application:
     name: config-server
+
   cloud:
     config:
       server:
         git:
           uri: file:${CONFIG_REPO_PATH:../../config-repo}
+
+  devtools:
+    restart:
+      enabled: true
+      poll-interval: 1s
+      quiet-period: 400ms
+    livereload:
+      enabled: true

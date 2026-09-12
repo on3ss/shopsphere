@@ -5,6 +5,14 @@ spring:
   application:
     name: discovery-server
 
+  devtools:
+    restart:
+      enabled: true
+      poll-interval: 1s
+      quiet-period: 400ms
+    livereload:
+      enabled: true
+
 eureka:
   server:
     enable-self-preservation: false

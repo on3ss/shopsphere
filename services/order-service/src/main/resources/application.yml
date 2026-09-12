@@ -2,6 +2,14 @@ spring:
   application:
     name: order-service
 
+  devtools:
+    restart:
+      enabled: true
+      poll-interval: 1s
+      quiet-period: 400ms
+    livereload:
+      enabled: true
+
   config:
     import: optional:configserver:http://localhost:8888
 

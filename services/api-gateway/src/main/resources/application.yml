@@ -13,6 +13,14 @@ spring:
             locator:
               enabled: false
 
+  devtools:
+    restart:
+      enabled: true
+      poll-interval: 1s
+      quiet-period: 400ms
+    livereload:
+      enabled: true
+
 eureka:
   client:
     service-url:
